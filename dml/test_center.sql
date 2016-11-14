@@ -3,17 +3,17 @@ VALUES
 (
 'Hey Denver',
 '1720 Pearl Street',
-'Monday, Tuesday, Wendesday, Thursday, Friday, Saturday, Sunday', 0230,
+'Monday, Wednesday, Thursday, Saturday', 0230,
 0730,
 'http://heydenver.org/',
 false
 ),
 
 (
-'Denver Health',
-'1720 hospital street',
-'Monday, Tuesday, Wendesday, Thursday, Friday, Saturday, Sunday', 0230,
-0730,
-'http://denverhealth.com/',
+'The Center',
+'1301 E Colfax Avenue',
+'Monday, Thursday', 1630,
+1930,
+'http://www.glbtcolorado.org/health/',
 false
 )

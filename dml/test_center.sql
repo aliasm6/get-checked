@@ -17,3 +17,13 @@ false
 'http://denverhealth.com/',
 false
 )
+
+
+http POST http://localhost:8000/api/v1/centers \
+    Center_name=A place \
+    Address="1111 place st" married:=false hobbies:='["http", "pies"]' \  # Raw JSON
+    description=@about-john.txt \   # Embed text file
+    bookmarks:=@bookmarks.json
+
+
+curl -i -X POST -H "Content-Type: application/json" -d "{\"Center_name\": \"A place\", \"Address\":\"somewhere\", \"Days_open\": \"Monday, Tuesday\", \"Time_open\":\6\, \"Time_closed\":\10\, \"Website\": \"www.aplace.com\", \"Need_appointment\": \false\ }" http://localhost:8000/api/v1/centers

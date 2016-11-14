@@ -51,7 +51,8 @@ func main() {
 	{
 		v1.GET("/centers", GetCenters)
 		v1.GET("/centers/:id", GetCenter)
-		// v1.POST("/centers", PostCenter)
+		v1.POST("/centers", PostCenter)
+    v1.DELETE("/centers/:id", DeleteCenter)
 	}
 
 	r.Run(":8000")
@@ -65,7 +66,7 @@ func GetCenters(c *gin.Context) {
 	if err == nil {
 		c.JSON(200, centers)
 	} else {
-		c.JSON(404)
+		c.JSON(404, gin.H{"error":"you sucks"})
 		fmt.Println(err)
 	}
 
@@ -86,21 +87,32 @@ func GetCenter(c *gin.Context) {
 
 }
 
-func PostUser(c *gin.Context) {
+func PostCenter(c *gin.Context) {
 	var center TestCenter
 	c.Bind(&center)
-	if center.Name != "" && center.Address != "" && center.Days_open != nil && center.Time_open != nil && center.Website != "" && center.Need_appointment != nil  {
-		insert, _ := dbmap.Exec(`INSERT INTO trial (Id, Center_name, Address, Days_open, Time_open, Time_closed, Website, Need_appointment)
-    VALUES ($1, $2)`, center.Name, center.Email)
+	if center.Center_name != "" && center.Address != "" && center.Days_open != "" && &center.Time_open != nil && center.Website != "" && &center.Need_appointment != nil  {
+		insert, _ := dbmap.Exec(`INSERT INTO testing_centers (Center_name, Address, Days_open, Time_open, Time_closed, Website, Need_appointment)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)`, center.Center_name, center.Address, center.Days_open, center.Time_open, center.Time_closed, center.Website, center.Need_appointment)
 
 		if insert != nil {
-			c.JSON(201, gin.H{"success": "Added User"})
+			c.JSON(201, gin.H{"success": "Added Center"})
 		} else {
 			c.JSON(501, gin.H{"failed": "Insert failed"})
 		}
 	} else {
 		c.JSON(422, gin.H{"error": "fields are empty"})
 	}
-	// curl -i -X POST -H "Content-Type: application/json" -d "{ \"name\": \"Beau\", \"email\": \"b@o.com\" }"
-	// http://localhost:8080/api/v1/users
+
+}
+
+func DeleteCenter(c *gin.Context) {
+
+	id := c.Params.ByName("id")
+	err, _ := dbmap.Exec("DELETE from testing_centers WHERE id=?", id)
+	if err == nil {
+		c.JSON(200, gin.H{"success": "you deleted the thing"})
+	} else {
+		c.JSON(404, gin.H{"error": "center not found"})
+	}
+
 }
